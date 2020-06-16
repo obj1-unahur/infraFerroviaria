@@ -1,0 +1,46 @@
+import infraestructuraFerroviaria.*
+import Deposito.*
+import Locomotora.*
+import Vagones.*
+
+test "test Depositos" {
+	var vagon = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
+	var vagon1 = new VagonPasajeros(largo = 7, ancho = 2, tieneBanios = false, estaOrdenado = false)
+	var vagon2 = new VagonDeCarga(cargaMaximaIdeal = 6800, maderasSueltas = 5)
+	var vagon3 = new VagonDormitorio(cantidadCompartimientos = 8, cantidadDeCamasEnCompartimiento = 3)
+	var locomotora = new Locomotora(peso = 3000, cuantoPesoPuedeArrastrar = 20000, velocidadMaxima = 170)
+	var formacion1 = new Formacion()
+	
+	formacion1.agregarAFormacion(vagon)
+	formacion1.agregarAFormacion(vagon1)
+	formacion1.agregarAFormacion(vagon2)
+	formacion1.agregarAFormacion(vagon3)
+	formacion1.agregarLocomotora(locomotora)
+	assert.equals(vagon3,formacion1.vagonMasPesado())
+	
+	var vagon4 = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
+	var vagon5 = new VagonPasajeros(largo = 7, ancho = 2, tieneBanios = false, estaOrdenado = false)
+	var vagon6 = new VagonDeCarga(cargaMaximaIdeal = 6800, maderasSueltas = 5)
+	var vagon7 = new VagonDormitorio(cantidadCompartimientos = 8, cantidadDeCamasEnCompartimiento = 3)
+	var locomotora1 = new Locomotora(peso = 3000, cuantoPesoPuedeArrastrar = 20000, velocidadMaxima = 170)
+	//var locomotora2 = new Locomotora(peso = 5000, cuantoPesoPuedeArrastrar = 22000, velocidadMaxima = 1600)
+	var formacion2 = new Formacion()
+	
+	formacion2.agregarAFormacion(vagon4)
+	formacion2.agregarAFormacion(vagon5)
+	formacion2.agregarAFormacion(vagon6)
+	formacion2.agregarAFormacion(vagon7)
+	formacion2.agregarLocomotora(locomotora1)
+	
+	var deposito = new Deposito()
+	
+	deposito.agregarFormacionADeposito(formacion1)
+	deposito.agregarFormacionADeposito(formacion2)
+	//deposito.agregarLocomotoraADeposito(locomotora2)
+	
+	assert.equals(vagon7,formacion2.vagonMasPesado())
+	assert.equals(#{vagon3,vagon7}, deposito.conjuntoDeVagones())
+	
+	assert.notThat(deposito.necesitaUnConductorExperimentado())
+
+}

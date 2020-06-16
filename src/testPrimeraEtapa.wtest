@@ -1,0 +1,87 @@
+import infraestructuraFerroviaria.*
+import Deposito.*
+import Locomotora.*
+import Vagones.*
+
+test "primera Formacion" {
+	var vagon = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
+	var vagon1 = new VagonPasajeros(largo = 7, ancho = 2, tieneBanios = false, estaOrdenado = false)
+	var vagon2 = new VagonDeCarga(cargaMaximaIdeal = 6800, maderasSueltas = 5)
+	var vagon3 = new VagonDormitorio(cantidadCompartimientos = 8, cantidadDeCamasEnCompartimiento = 3)
+	var formacion1 = new Formacion()
+	
+	
+	assert.equals(100,vagon.cantidadDePasajeros())
+	assert.equals(41,vagon1.cantidadDePasajeros())
+	assert.equals(0,vagon2.cantidadDePasajeros())
+	assert.equals(24,vagon3.cantidadDePasajeros())
+	
+	assert.equals(10300,vagon.pesoMaximoDeVagon())
+	assert.equals(6080,vagon1.pesoMaximoDeVagon())
+	assert.equals(6300,vagon2.pesoMaximoDeVagon())
+	assert.equals(7120,vagon3.pesoMaximoDeVagon())		
+	
+	assert.equals(300,vagon.cantidadMaximaDeCarga())
+	assert.equals(800,vagon1.cantidadMaximaDeCarga())
+	assert.equals(4800,vagon2.cantidadMaximaDeCarga())
+	assert.equals(1200,vagon3.cantidadMaximaDeCarga())
+	
+	assert.that(vagon.tieneBanios())
+	assert.notThat(vagon1.tieneBanios())
+	assert.notThat(vagon2.tieneBanios())
+	assert.that(vagon3.tieneBanios())
+
+	formacion1.agregarAFormacion(vagon)
+	formacion1.agregarAFormacion(vagon1)
+	formacion1.agregarAFormacion(vagon2)
+	formacion1.agregarAFormacion(vagon3)
+	
+	assert.equals(29800,formacion1.pesoTotalDeVagones())
+	
+	//Antes del mantenimiento
+	assert.equals(165,formacion1.pasajerosQuePuedeLlevar())
+	assert.equals(1,formacion1.vagonesPopulares())
+	assert.notThat(formacion1.formacionCarguera())
+	assert.equals(4220,formacion1.dispercionDePesos())
+	assert.equals(2,formacion1.cantidadDeVagonesConBanios())
+	assert.notThat(formacion1.estaOrganizado())
+	assert.notThat(formacion1.estaEquilibradoEnPasajeros())
+	
+	formacion1.mantenimientoDeFormacion()
+	
+	//Despues del mantenimiento
+	assert.equals(180,formacion1.pasajerosQuePuedeLlevar())
+	assert.equals(2,formacion1.vagonesPopulares())
+	assert.notThat(formacion1.formacionCarguera())
+	assert.equals(3200,formacion1.dispercionDePesos())
+	assert.equals(10300,formacion1.pesoVagonMasPesado())
+	assert.equals(7100,formacion1.pesoVagonMasLiviano())
+	assert.equals(2,formacion1.cantidadDeVagonesConBanios())
+	assert.notThat(formacion1.estaOrganizado())
+	assert.notThat(formacion1.estaEquilibradoEnPasajeros())
+}
+
+test "segunda formacion"{
+	var vagon = new VagonDeCarga(cargaMaximaIdeal = 8000, maderasSueltas = 1)
+	var vagon1 = new VagonDormitorio(cantidadCompartimientos = 15, cantidadDeCamasEnCompartimiento = 4)
+	var formacion = new Formacion()
+	
+	formacion.agregarAFormacion(vagon)
+	formacion.agregarAFormacion(vagon1)
+	
+	//antes del matenimiento
+	assert.equals(60,formacion.pasajerosQuePuedeLlevar())
+	assert.equals(1,formacion.vagonesPopulares())
+	assert.that(formacion.formacionCarguera())
+	assert.equals(900,formacion.dispercionDePesos())
+	assert.equals(1,formacion.cantidadDeVagonesConBanios())
+	
+	formacion.mantenimientoDeFormacion()
+	
+	//Despues del mantenimiento
+	assert.equals(60,formacion.pasajerosQuePuedeLlevar())
+	assert.equals(1,formacion.vagonesPopulares())
+	assert.that(formacion.formacionCarguera())
+	assert.equals(500,formacion.dispercionDePesos())
+	assert.equals(1,formacion.cantidadDeVagonesConBanios())
+}
