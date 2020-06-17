@@ -10,20 +10,21 @@ class Deposito{
 	
 	
 	method conjuntoDeVagones(){
-		var nuevaLista = []
-		listaFormaciones.forEach({formacion => nuevaLista.add(formacion.vagonMasPesado())})
-		return nuevaLista.asSet()
+		return listaFormaciones.map({ formacion => formacion.vagonMasPesado() }).asSet()
 	}
+	
 	method necesitaUnConductorExperimentado(){
 		return listaFormaciones.any({formacion => formacion.esCompleja()})
 	}
 	method agregarAFormacionDeterminada(formacion){
-		if(not formacion.puedeMoverse()){
-			 if(listaLocomotoras.any({locomotora => locomotora.cuantoPesoPuedeArrastrar() >= formacion.kilosDeEmpujeLeFaltan()})){
-			 	var locomotoraSuelta = listaLocomotoras.find({locomotora => locomotora.cuantoPesoPuedeArrastrar() >= formacion.kilosDeEmpujeLeFaltan()})
+		if(not formacion.puedeMoverse() && self.hayAlgunaLocomotoraParaUnaFormacion(formacion)){
+			 	const locomotoraSuelta = listaLocomotoras.find({locomotora => locomotora.cuantoPesoPuedeArrastrar() >= formacion.kilosDeEmpujeLeFaltan()})
 			 	formacion.agregarLocomotora(locomotoraSuelta)
 			 	listaLocomotoras.remove(locomotoraSuelta)
-			 }
 		}
+	}
+	
+	method hayAlgunaLocomotoraParaUnaFormacion(formacion){
+		return listaLocomotoras.any({locomotora => locomotora.cuantoPesoPuedeArrastrar() >= formacion.kilosDeEmpujeLeFaltan()})
 	}
 }

@@ -1,4 +1,4 @@
-import infraestructuraFerroviaria.*
+import Formacion.*
 import Deposito.*
 import Locomotora.*
 import Vagones.*

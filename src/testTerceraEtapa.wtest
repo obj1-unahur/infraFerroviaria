@@ -1,10 +1,10 @@
-import infraestructuraFerroviaria.*
+import Formacion.*
 import Deposito.*
 import Locomotora.*
 import Vagones.*
 
 test "test Depositos" {
-	var vagon = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
+var vagon = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
 	var vagon1 = new VagonPasajeros(largo = 7, ancho = 2, tieneBanios = false, estaOrdenado = false)
 	var vagon2 = new VagonDeCarga(cargaMaximaIdeal = 6800, maderasSueltas = 5)
 	var vagon3 = new VagonDormitorio(cantidadCompartimientos = 8, cantidadDeCamasEnCompartimiento = 3)
@@ -16,7 +16,7 @@ test "test Depositos" {
 	formacion1.agregarAFormacion(vagon2)
 	formacion1.agregarAFormacion(vagon3)
 	formacion1.agregarLocomotora(locomotora)
-	assert.equals(vagon3,formacion1.vagonMasPesado())
+	assert.equals(vagon,formacion1.vagonMasPesado())
 	
 	var vagon4 = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
 	var vagon5 = new VagonPasajeros(largo = 7, ancho = 2, tieneBanios = false, estaOrdenado = false)
@@ -38,8 +38,8 @@ test "test Depositos" {
 	deposito.agregarFormacionADeposito(formacion2)
 	//deposito.agregarLocomotoraADeposito(locomotora2)
 	
-	assert.equals(vagon7,formacion2.vagonMasPesado())
-	assert.equals(#{vagon3,vagon7}, deposito.conjuntoDeVagones())
+	assert.equals(vagon4,formacion2.vagonMasPesado())
+	assert.equals(#{vagon,vagon4}, deposito.conjuntoDeVagones())
 	
 	assert.notThat(deposito.necesitaUnConductorExperimentado())
 
