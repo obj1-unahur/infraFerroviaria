@@ -3,51 +3,69 @@ import Deposito.*
 import Locomotora.*
 import Vagones.*
 
-test "test Locomotora" {
+describe "Segunda parte"{
 	var vagon = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
 	var vagon1 = new VagonPasajeros(largo = 7, ancho = 2, tieneBanios = false, estaOrdenado = false)
 	var vagon2 = new VagonDeCarga(cargaMaximaIdeal = 6800, maderasSueltas = 5)
 	var vagon3 = new VagonDormitorio(cantidadCompartimientos = 8, cantidadDeCamasEnCompartimiento = 3)
 	var locomotora = new Locomotora(peso = 3000, cuantoPesoPuedeArrastrar = 20000, velocidadMaxima = 170)
 	var formacion1 = new Formacion()
-	
-	assert.equals(100,vagon.cantidadDePasajeros())
-	assert.equals(41,vagon1.cantidadDePasajeros())
-	assert.equals(0,vagon2.cantidadDePasajeros())
-	assert.equals(24,vagon3.cantidadDePasajeros())
-	
-	assert.equals(10300,vagon.pesoMaximoDeVagon())
-	assert.equals(6080,vagon1.pesoMaximoDeVagon())
-	assert.equals(6300,vagon2.pesoMaximoDeVagon())
-	assert.equals(7120,vagon3.pesoMaximoDeVagon())		
-	
-	assert.equals(300,vagon.cantidadMaximaDeCarga())
-	assert.equals(800,vagon1.cantidadMaximaDeCarga())
-	assert.equals(4800,vagon2.cantidadMaximaDeCarga())
-	assert.equals(1200,vagon3.cantidadMaximaDeCarga())
-	
-	assert.that(vagon.tieneBanios())
-	assert.notThat(vagon1.tieneBanios())
-	assert.notThat(vagon2.tieneBanios())
-	assert.that(vagon3.tieneBanios())
 
-	formacion1.agregarAFormacion(vagon)
-	formacion1.agregarAFormacion(vagon1)
-	formacion1.agregarAFormacion(vagon2)
-	formacion1.agregarAFormacion(vagon3)
-	formacion1.agregarLocomotora(locomotora)
+	var locomotora2 = new Locomotora(peso = 5000, cuantoPesoPuedeArrastrar = 22000, velocidadMaxima = 1600)
+		
+	fixture{
+		formacion1.agregarAFormacion(vagon)
+		formacion1.agregarAFormacion(vagon1)
+		formacion1.agregarAFormacion(vagon2)
+		formacion1.agregarAFormacion(vagon3)
+		formacion1.agregarLocomotora(locomotora)
+		
+	}
 	
-	assert.equals(29800,formacion1.pesoTotalDeVagones())
+	test"Cantidad de pasajeros"{
+		assert.equals(100,vagon.cantidadDePasajeros())
+		assert.equals(41,vagon1.cantidadDePasajeros())
+		assert.equals(0,vagon2.cantidadDePasajeros())
+		assert.equals(24,vagon3.cantidadDePasajeros())
+	}
 	
-	assert.that(formacion1.esEficiente())
-	assert.notThat(formacion1.puedeMoverse())
-	assert.equals(12800, formacion1.kilosDeEmpujeLeFaltan())
+	test"Peso maximo vagon"{
+		assert.equals(10300,vagon.pesoMaximoDeVagon())
+		assert.equals(6080,vagon1.pesoMaximoDeVagon())
+		assert.equals(6300,vagon2.pesoMaximoDeVagon())
+		assert.equals(7120,vagon3.pesoMaximoDeVagon())		
+	}
 	
-	var locomotora1 = new Locomotora(peso = 5000, cuantoPesoPuedeArrastrar = 22000, velocidadMaxima = 1600)
+	test"Cantidad maxima de carga"{
+		assert.equals(300,vagon.cantidadMaximaDeCarga())
+		assert.equals(800,vagon1.cantidadMaximaDeCarga())
+		assert.equals(4800,vagon2.cantidadMaximaDeCarga())
+		assert.equals(1200,vagon3.cantidadMaximaDeCarga())
+	}
 	
-	formacion1.agregarLocomotora(locomotora1)
+	test"Tiene baños"{
+		assert.that(vagon.tieneBanios())
+		assert.notThat(vagon1.tieneBanios())
+		assert.notThat(vagon2.tieneBanios())
+		assert.that(vagon3.tieneBanios())
+	}
 	
-	assert.notThat(formacion1.esEficiente())
-	assert.that(formacion1.puedeMoverse())
-	assert.equals(0, formacion1.kilosDeEmpujeLeFaltan())	
+	test"Peso total de vagones"{
+		assert.equals(29800,formacion1.pesoTotalDeVagones())
+	}
+	
+	test"Extras"{
+		
+		assert.that(formacion1.esEficiente())
+		assert.notThat(formacion1.puedeMoverse())
+		assert.equals(12800, formacion1.kilosDeEmpujeLeFaltan())
+		
+		formacion1.agregarLocomotora(locomotora2)
+		
+		assert.notThat(formacion1.esEficiente())
+		assert.that(formacion1.puedeMoverse())
+		assert.equals(0, formacion1.kilosDeEmpujeLeFaltan())	
+		
+	}
+	
 }
